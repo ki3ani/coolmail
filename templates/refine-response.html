@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Refine Response</h1>
+<form action="{{ url_for('refine_response') }}" method="post">
+    <div class="mb-3">
+        <label for="original_email" class="form-label">Original Email</label>
+        <textarea class="form-control" id="original_email" name="original_email" rows="3" readonly>{{ original_email }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="current_response" class="form-label">Current Response</label>
+        <textarea class="form-control" id="current_response" name="current_response" rows="5" required>{{ current_response }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="refinement_instructions" class="form-label">Refinement Instructions</label>
+        <input type="text" class="form-control" id="refinement_instructions" name="refinement_instructions" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Refine Response</button>
+</form>
+{% if refined_response %}
+    <h2 class="mt-4">Refined Response:</h2>
+    <p>{{ refined_response }}</p>
+{% endif %}
+{% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+{% endif %}
+{% endblock %}

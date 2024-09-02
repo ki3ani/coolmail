@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Categorized Emails</h1>
+{% if error %}
+    <p class="text-danger">{{ error }}</p>
+{% else %}
+    <ul class="nav nav-tabs" id="emailTabs" role="tablist">
+        {% for category, emails in categorized_emails %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if loop.first %}active{% endif %}" id="{{ category|replace(' ', '-') }}-tab" data-bs-toggle="tab" data-bs-target="#{{ category|replace(' ', '-') }}" type="button" role="tab" aria-controls="{{ category|replace(' ', '-') }}" aria-selected="{% if loop.first %}true{% else %}false{% endif %}">
+                {{ category }} ({{ emails|length }})
+            </button>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="tab-content" id="emailTabsContent">
+        {% for category, emails in categorized_emails %}
+        <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ category|replace(' ', '-') }}" role="tabpanel" aria-labelledby="{{ category|replace(' ', '-') }}-tab">
+            <div class="list-group mt-3">
+                {% for email in emails %}
+                <a href="{{ url_for('view_email', message_id=email.id) }}" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">{{ email.subject }}</h5>
+                    <p class="mb-1">{{ email.snippet }}</p>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var triggerTabList = [].slice.call(document.querySelectorAll('#emailTabs button'))
+    triggerTabList.forEach(function (triggerEl) {
+        var tabTrigger = new bootstrap.Tab(triggerEl)
+        triggerEl.addEventListener('click', function (event) {
+            event.preventDefault()
+            tabTrigger.show()
+        })
+    })
+</script>
+{% endblock %}

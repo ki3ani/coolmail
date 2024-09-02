@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Manage Recipients</h1>
+
+<form method="post">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <button type="submit" name="add_recipient">Add Recipient</button>
+</form>
+
+<form action="{{ url_for('import_csv') }}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv" required>
+    <button type="submit" name="import_csv">Import CSV</button>
+</form>
+
+<form action="{{ url_for('import_contacts') }}" method="post">
+    <button type="submit" name="import_contacts">Import Nylas Contacts</button>
+</form>
+
+<h2>Recipients</h2>
+<ul>
+{% for recipient in recipients %}
+    <li>{{ recipient.name }} ({{ recipient.email }})</li>
+{% endfor %}
+</ul>
+{% endblock %}

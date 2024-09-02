@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Send Bulk Email</h1>
+<form action="{{ url_for('send_bulk_email') }}" method="post">
+    <div class="mb-3">
+        <label for="prompt" class="form-label">Email Prompt</label>
+        <textarea class="form-control" id="prompt" name="prompt" rows="5" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="subject" class="form-label">Subject</label>
+        <input type="text" class="form-control" id="subject" name="subject" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Generate and Send Bulk Email</button>
+</form>
+{% if status == 'success' %}
+    <div class="alert alert-success mt-3">{{ message }}</div>
+{% elif status == 'error' %}
+    <div class="alert alert-danger mt-3">
+        <h4>Errors occurred:</h4>
+        <ul>
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% endblock %}

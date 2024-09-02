@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Recent Emails</h1>
+{% if error %}
+    <p class="text-danger">{{ error }}</p>
+{% else %}
+    <ul class="list-group">
+    {% for message in messages %}
+        <li class="list-group-item">
+            <h5>{{ message.subject }}</h5>
+            <p>{{ message.snippet }}</p>
+            <a href="{{ url_for('view_email', message_id=message.id) }}" class="btn btn-primary btn-sm">View and Respond</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

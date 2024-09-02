@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create Campaign</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="name" class="form-label">Campaign Name:</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="subject" class="form-label">Email Subject:</label>
+        <input type="text" class="form-control" id="subject" name="subject" required>
+    </div>
+    <div class="mb-3">
+        <label for="prompt" class="form-label">Email Content Prompt:</label>
+        <textarea class="form-control" id="prompt" name="prompt" required placeholder="e.g., an email for marketing my new book"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="schedule_type" class="form-label">Schedule Type:</label>
+        <select class="form-select" id="schedule_type" name="schedule_type" required>
+            <option value="once">Send Once</option>
+            <option value="recurring">Send Recurring</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="schedule_days" class="form-label">Schedule Days:</label>
+        <input type="number" class="form-control" id="schedule_days" name="schedule_days" required min="0">
+        <small class="form-text text-muted">For "Send Once", enter the number of days from now. For "Recurring", enter the interval in days.</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Campaign</button>
+</form>
+{% endblock %}

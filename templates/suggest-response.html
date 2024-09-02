@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Suggest Response</h1>
+<form action="{{ url_for('suggest_response') }}" method="post">
+    <div class="mb-3">
+        <label for="email_body" class="form-label">Email Body</label>
+        <textarea class="form-control" id="email_body" name="email_body" rows="5" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="tone" class="form-label">Tone</label>
+        <select class="form-select" id="tone" name="tone">
+            <option value="professional">Professional</option>
+            <option value="friendly">Friendly</option>
+            <option value="formal">Formal</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Suggest Response</button>
+</form>
+{% if suggested_response %}
+    <h2 class="mt-4">Suggested Response:</h2>
+    <p>{{ suggested_response }}</p>
+{% endif %}
+{% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+{% endif %}
+{% endblock %}

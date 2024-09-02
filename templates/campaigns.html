@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Campaigns</h1>
+
+<a href="{{ url_for('create_campaign') }}">Create New Campaign</a>
+
+<ul>
+{% for campaign in campaigns %}
+    <li>
+        {{ campaign.name }} ({{ campaign.status }})
+        {% if campaign.status == 'scheduled' %}
+            <form action="{{ url_for('schedule_campaign', campaign_id=campaign.id) }}" method="post">
+                <button type="submit">Send Now</button>
+            </form>
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>View Email</h1>
+{% if error %}
+    <p class="text-danger">{{ error }}</p>
+{% else %}
+    <h2>{{ message.subject }}</h2>
+    <p><strong>From:</strong> 
+    {% if message.from_ %}
+        {% for sender in message.from_ %}
+            {{ sender.email }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% else %}
+        Unknown
+    {% endif %}
+    </p>
+    <p><strong>To:</strong> 
+    {% if message.to %}
+        {% for recipient in message.to %}
+            {{ recipient.email }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% else %}
+        Unknown
+    {% endif %}
+    </p>
+    <div class="card mb-3">
+        <div class="card-body">
+            {{ message.body | safe }}
+        </div>
+    </div>
+
+    {% if generated_response %}
+        <h3>Generated Response:</h3>
+        <form action="{{ url_for('refine_response', message_id=message.id) }}" method="post">
+            <div class="form-group">
+                <textarea class="form-control" name="response" rows="10">{{ generated_response }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Refine Response</button>
+        </form>
+        <form action="{{ url_for('send_response', message_id=message.id) }}" method="post" class="mt-2">
+            <input type="hidden" name="response" value="{{ generated_response }}">
+            <button type="submit" class="btn btn-success">Send Response</button>
+        </form>
+    {% else %}
+        <form method="post">
+            <button type="submit" class="btn btn-primary">Generate AI Response</button>
+        </form>
+    {% endif %}
+{% endif %}
+{% endblock %}

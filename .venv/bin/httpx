@@ -1,4 +1,4 @@
-#!/home/ki3ani/nyla/.venv/bin/python
+#!/home/ki3ani/coolmail/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

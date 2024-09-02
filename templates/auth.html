@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Authentication</h1>
+{% if grant_id %}
+    <p>You are authenticated. Grant ID: {{ grant_id }}</p>
+{% else %}
+    <p>Click the button below to authenticate with Nylas:</p>
+    <a href="{{ auth_url }}" class="btn btn-primary">Authenticate</a>
+{% endif %}
+{% endblock %}

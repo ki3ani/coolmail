@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Send Email</h1>
+<form id="emailForm" method="post">
+    <div class="mb-3">
+        <label for="to" class="form-label">To:</label>
+        <input type="email" class="form-control" id="to" name="to" required>
+    </div>
+    <div class="mb-3">
+        <label for="subject" class="form-label">Subject:</label>
+        <input type="text" class="form-control" id="subject" name="subject" required>
+    </div>
+    <div class="mb-3">
+        <label for="body" class="form-label">Body:</label>
+        <textarea class="form-control" id="body" name="body" rows="10" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="schedule_time" class="form-label">Schedule (optional):</label>
+        <input type="datetime-local" class="form-control" id="schedule_time" name="schedule_time">
+    </div>
+    <div class="mb-3">
+        <label for="ai_prompt" class="form-label">AI Prompt (optional):</label>
+        <input type="text" class="form-control" id="ai_prompt">
+        <button type="button" class="btn btn-secondary mt-2" onclick="generateEmail()">Generate with AI</button>
+    </div>
+    <button type="submit" class="btn btn-primary" name="action" value="send">Send</button>
+    <button type="submit" class="btn btn-secondary" name="action" value="draft">Save as Draft</button>
+    <button type="submit" class="btn btn-info" name="action" value="schedule">Schedule</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function generateEmail() {
+    const prompt = document.getElementById('ai_prompt').value;
+    if (!prompt) {
+        alert('Please enter a prompt for the AI.');
+        return;
+    }
+
+    fetch('/nylas/generate-email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            'prompt': prompt
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('body').value = data.email;
+        } else {
+            alert('Error generating email: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while generating the email.');
+    });
+}
+
+document.getElementById('emailForm').addEventListener('submit', function(e) {
+    const action = e.submitter.value;
+    if (action === 'schedule' && !document.getElementById('schedule_time').value) {
+        e.preventDefault();
+        alert('Please select a schedule time for the email.');
+    }
+});
+</script>
+{% endblock %}
